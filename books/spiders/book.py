@@ -20,4 +20,3 @@ class BookSpider(scrapy.Spider):
             next_page_url = response.urljoin(next_page)
             # print(next_page_url)
             yield scrapy.Request(next_page_url, callback=self.parse)
-

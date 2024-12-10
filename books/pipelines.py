@@ -7,22 +7,24 @@ from fileinput import close
 # useful for handling different item types with a single interface
 import scrapy
 from itemadapter import ItemAdapter
-import json
+import sqlite3
 
 
 class BooksPipeline:
 
     def __init__(self):
         self.json_data = {}
-        self.json_file = open("data/items.json", "a", encoding='utf8')
 
-    def open_spider(self, spider):
+        self.sqlite3_db = r"E:\Repositories\Python\WebCrawler\books\data\book.sqlite3"
+        self.con: sqlite3.Connection = sqlite3.connect(self.sqlite3_db)
+
+    def open_spider(self, spider: scrapy.Spider):
         pass
 
-    def close_spider(self, spider):
-        self.json_file.close()
+    def close_spider(self, spider: scrapy.Spider):
+        self.con.commit()
+        self.con.close()
 
-    def process_item(self, item, spider: scrapy.Spider):
-        line = json.dumps(ItemAdapter(item).asdict(), ensure_ascii=False)
-        self.json_file.write(line + '\n')
+    def process_item(self, item: scrapy.Item, spider: scrapy.Spider):
+        self.con.execute("INSERT INTO book (URL,Title,Price) VALUES(?,?,?)", tuple(item.values()))
         return item
