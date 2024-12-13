@@ -1,4 +1,6 @@
 import scrapy
+import scrapy.http
+import scrapy.http.response
 from books.items import BooksItem
 
 
@@ -7,8 +9,10 @@ class BookSpider(scrapy.Spider):
     allowed_domains = ["books.toscrape.com"]
     start_urls = ["https://books.toscrape.com/"]
 
-    def parse(self, response):
-        for book in response.css("article.product_pod"):
+    def parse(self, response: scrapy.http.Response, **kwargs):
+        for book in response.css(
+                "article.product_pod",
+        ):
             item = BooksItem()
             item["url"] = response.urljoin(book.css("h3 > a::attr(href)").get())
             item["title"] = book.css("h3 > a::attr(title)").get()
