@@ -4,6 +4,7 @@ import scrapy.http.response
 from books.items import BooksItem
 
 
+# noinspection PyTypeChecker
 class BookSpider(scrapy.Spider):
     name = "book"
     allowed_domains = ["books.toscrape.com"]
@@ -12,7 +13,7 @@ class BookSpider(scrapy.Spider):
     def parse(self, response: scrapy.http.Response, **kwargs):
         for book in response.css(
                 "article.product_pod",
-        ):
+        ):  # type ignore
             item = BooksItem()
             item["url"] = response.urljoin(book.css("h3 > a::attr(href)").get())
             item["title"] = book.css("h3 > a::attr(title)").get()
