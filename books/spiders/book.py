@@ -6,6 +6,20 @@ from books.items import BooksItem
 
 # noinspection PyTypeChecker
 class BookSpider(scrapy.Spider):
+    """
+    A Scrapy Spider to scrape book information from 'books.toscrape.com'.
+    Attributes:
+        name (str): The name of the spider.
+        allowed_domains (list): A list of domains that the spider is allowed to scrape.
+        start_urls (list): A list of URLs where the spider will begin to crawl.
+    Methods:
+        parse(response, **kwargs):
+            Parses the response from the website and extracts book information.
+            Yields a BooksItem for each book found and follows pagination links.
+            Args:
+                response (scrapy.http.Response): The response object containing the HTML content of the page.
+                **kwargs: Additional keyword arguments.
+    """
     name = "book"
     allowed_domains = ["books.toscrape.com"]
     start_urls = ["https://books.toscrape.com/"]

@@ -568,7 +568,7 @@ wheels = [
 ]
 
 [[package]]
-name = "zope.interface"
+name = "zope-interface"
 version = "7.2"
 source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
 dependencies = [
