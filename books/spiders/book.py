@@ -20,13 +20,14 @@ class BookSpider(scrapy.Spider):
                 response (scrapy.http.Response): The response object containing the HTML content of the page.
                 **kwargs: Additional keyword arguments.
     """
+
     name = "book"
     allowed_domains = ["books.toscrape.com"]
     start_urls = ["https://books.toscrape.com/"]
 
     def parse(self, response: scrapy.http.Response, **kwargs):
         for book in response.css(
-                "article.product_pod",
+            "article.product_pod",
         ):  # type ignore
             item = BooksItem()
             item["url"] = response.urljoin(book.css("h3 > a::attr(href)").get())
